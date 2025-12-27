@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Connecting...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body{
+        margin:0;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background:#020617;
+        color:#fff;
+        text-align:center;
+    }
+    .box{
+        background:#0f172a;
+        padding:30px;
+        border-radius:12px;
+        box-shadow:0 0 20px rgba(0,0,0,.5);
+        max-width:420px;
+    }
+    .loading{
+        margin-top:15px;
+        font-size:14px;
+        opacity:.7;
+    }
+</style>
+</head>
+
+<body>
+<div class="box">
+    <h2>🔄 Connecting to server…</h2>
+    <div class="loading">Please wait</div>
+</div>
+
+<script>
+fetch("link.txt?ts=" + Date.now())
+    .then(r => r.text())
+    .then(url => {
+        url = url.trim();
+
+        if(!url || url.startsWith("OFFLINE")){
+            document.querySelector("h2").innerText =
+                "🚫 Server Temporarily Closed";
+            document.querySelector(".loading").innerText =
+                "Please try again later";
+            return;
+        }
+
+        // ✅ redirect
+        window.location.href = url;
+    })
+    .catch(() => {
+        document.querySelector("h2").innerText =
+            "⚠ Unable to connect";
+        document.querySelector(".loading").innerText =
+            "Network issue or server down";
+    });
+</script>
+</body>
+</html>
